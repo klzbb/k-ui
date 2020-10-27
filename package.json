@@ -4,7 +4,9 @@
   "description": "an ui base on vue.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:file": "node build/bin/build-entry.js & node build/bin/version.js",
+    "bootstrap": "yarn || npm i",
+    "dev": "npm run bootstrap && npm run build:file && cross-env NODE_ENV=development webpack-dev-server --config build/webpack.demo.js & node build/bin/template.js"
   },
   "repository": {
     "type": "git",
@@ -19,5 +21,21 @@
   "bugs": {
     "url": "https://github.com/klzbb/k-ui/issues"
   },
-  "homepage": "https://github.com/klzbb/k-ui#readme"
+  "homepage": "https://github.com/klzbb/k-ui#readme",
+  "devDependencies": {
+    "copy-webpack-plugin": "^6.2.1",
+    "cross-env": "^7.0.2",
+    "html-webpack-plugin": "^4.5.0",
+    "json-templater": "^1.2.0",
+    "mini-css-extract-plugin": "^1.2.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "progress-bar-webpack-plugin": "^2.1.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "uppercamelcase": "^3.0.0",
+    "vue-loader": "^15.9.3",
+    "webpack": "^5.2.0",
+    "webpack-cli": "^4.1.0",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-node-externals": "^2.5.2"
+  }
 }
