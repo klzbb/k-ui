@@ -1,0 +1,23 @@
+{
+  "name": "k-ui",
+  "version": "1.0.0",
+  "description": "an ui base on vue.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/klzbb/k-ui.git"
+  },
+  "keywords": [
+    "vue",
+    "vue-ui"
+  ],
+  "author": "konglingzhan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/klzbb/k-ui/issues"
+  },
+  "homepage": "https://github.com/klzbb/k-ui#readme"
+}
