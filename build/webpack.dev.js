@@ -10,7 +10,6 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin'); // 项目启�
 const VueLoaderPlugin = require('vue-loader/lib/plugin'); // 解析.vue文件
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'); // 用于优化或者压缩CSS资源
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin'); // 压缩优化js文件
-
 const config = require('./config');
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -33,8 +32,9 @@ const webpackConfig = {
     modules: ['node_modules']
   },
   devServer: {
-    host: '0.0.0.0',
-    port: 8085,
+    open: true,
+    host: 'localhost',
+    port: 8088,
     publicPath: '/',
     hot: true
   },
@@ -46,26 +46,21 @@ const webpackConfig = {
   },
   module: {
     rules: [
-      {
-        enforce: 'pre',
-        test: /\.(vue|jsx?)$/,
-        exclude: /node_modules/,
-        loader: 'eslint-loader'
-      },
-      {
-        test: /\.(jsx?|babel|es6)$/,
-        include: process.cwd(),
-        exclude: config.jsexclude,
-        loader: 'babel-loader'
-      },
+      // {
+      //   enforce: 'pre',
+      //   test: /\.(vue|jsx?)$/,
+      //   exclude: /node_modules/,
+      //   loader: 'eslint-loader'
+      // },
+      // {
+      //   test: /\.(jsx?|babel|es6)$/,
+      //   include: process.cwd(),
+      //   exclude: config.jsexclude,
+      //   loader: 'babel-loader'
+      // },
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          compilerOptions: {
-            preserveWhitespace: false
-          }
-        }
+        loader: 'vue-loader'
       },
       {
         test: /\.(scss|css)$/,
@@ -105,13 +100,12 @@ const webpackConfig = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: './examples/index.tpl',
-      filename: './index.html',
-      favicon: './examples/favicon.ico'
+      template: './examples/index.html',
+      filename: './index.html'
     }),
-    new CopyWebpackPlugin([
-      { from: 'examples/versions.json' }
-    ]),
+    // new CopyWebpackPlugin([
+    //   { from: 'examples/versions.json' }
+    // ]),
     new ProgressBarPlugin(),
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
