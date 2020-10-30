@@ -10,7 +10,8 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin'); // 项目启�
 const VueLoaderPlugin = require('vue-loader/lib/plugin'); // 解析.vue文件
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'); // 用于优化或者压缩CSS资源
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin'); // 压缩优化js文件
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer'); // 打包性能分析插件
+const { CleanWebpackPlugin } = require("clean-webpack-plugin"); // 清除文件夹
 
 const config = require('./config');
 
@@ -19,7 +20,8 @@ const isPlay = !!process.env.PLAY_ENV;
 
 const webpackConfig = {
   mode: "production",
-  entry: path.resolve(__dirname, '../examples/entry.js'),
+  // entry: path.resolve(__dirname, '../examples/entry.js'),
+  entry: path.resolve(__dirname, '../test/form.md'),
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: process.env.CI_ENV || '',
@@ -59,6 +61,14 @@ const webpackConfig = {
       //   loader: 'babel-loader'
       // },
       {
+        test: /\.kk$/,
+        use: [
+          {
+            loader: path.resolve(__dirname, "./test.js")
+          }
+        ]
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader'
       },
@@ -70,22 +80,22 @@ const webpackConfig = {
           'sass-loader'
         ]
       },
-      // {
-      //   test: /\.md$/,
-      //   use: [
-      //     {
-      //       loader: 'vue-loader',
-      //       options: {
-      //         compilerOptions: {
-      //           preserveWhitespace: false
-      //         }
-      //       }
-      //     },
-      //     {
-      //       loader: path.resolve(__dirname, './md-loader/index.js')
-      //     }
-      //   ]
-      // },
+      {
+        test: /\.md$/,
+        use: [
+          {
+            loader: 'vue-loader',
+            options: {
+              compilerOptions: {
+                preserveWhitespace: false
+              }
+            }
+          },
+          {
+            loader: path.resolve(__dirname, './md-loader/index.js')
+          }
+        ]
+      },
       {
         test: /\.(svg|otf|ttf|woff2?|eot|gif|png|jpe?g)(\?\S*)?$/,
         loader: 'url-loader',
@@ -99,6 +109,7 @@ const webpackConfig = {
   },
   plugins: [
     // new BundleAnalyzerPlugin(),
+    new CleanWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: './examples/index.html',

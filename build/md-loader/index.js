@@ -5,9 +5,10 @@ const {
 } = require('./util');
 const md = require('./config');
 
-module.exports = function(source) {
+module.exports = function (source) {
   const content = md.render(source);
-
+  console.count("jyz")
+  console.log("kkkk====", content)
   const startTag = '<!--element-demo:';
   const startTagLen = startTag.length;
   const endTag = ':element-demo-->';
