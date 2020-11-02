@@ -1,5 +1,4 @@
 module.exports = function (source) {
-  console.log(source)
-  console.log(typeof source)
-  return source;
+  console.log("source", source)
+  return "source";
 }

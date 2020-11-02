@@ -7,8 +7,8 @@ const md = require('./config');
 
 module.exports = function (source) {
   const content = md.render(source);
-  console.count("jyz")
-  console.log("kkkk====", content)
+  // console.count("jyz")
+  // console.log("kkkk====", content)
   const startTag = '<!--element-demo:';
   const startTagLen = startTag.length;
   const endTag = ':element-demo-->';
@@ -44,12 +44,12 @@ module.exports = function (source) {
   let pageScript = '';
   if (componenetsString) {
     pageScript = `<script>
-      export default {
-        name: 'component-doc',
-        components: {
-          ${componenetsString}
-        }
+    export default {
+      name: 'component-doc',
+      components: {
+        ${componenetsString}
       }
+    }
     </script>`;
   } else if (content.indexOf('<script>') === 0) { // 硬编码，有待改善
     start = content.indexOf('</script>') + '</script>'.length;
@@ -57,12 +57,14 @@ module.exports = function (source) {
   }
 
   output.push(content.slice(start));
-  return `
-    <template>
-      <section class="content element-doc">
-        ${output.join('')}
-      </section>
-    </template>
-    ${pageScript}
+  const tpl = `
+  <template>
+    <section class="content element-doc">
+      ${output.join('')}
+    </section>
+  </template>
+  ${pageScript}
   `;
+  console.log("tps===", tpl)
+  return tpl;
 };
