@@ -17,6 +17,7 @@ const config = require('./config');
 
 const isProd = process.env.NODE_ENV === 'production';
 const isPlay = !!process.env.PLAY_ENV;
+const getPort = require('get-port');
 
 const webpackConfig = {
   mode: "development",
@@ -35,7 +36,7 @@ const webpackConfig = {
   devServer: {
     open: true,
     host: 'localhost',
-    port: 8088,
+    port: ((async function () { return await getPort() })()),
     publicPath: '/',
     hot: true
   },

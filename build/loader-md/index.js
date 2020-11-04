@@ -64,6 +64,7 @@ module.exports = function (src) {
     `</template>\n`
   )
   cache.set(key, res)
+  console.log(res)
   return res
 
 };

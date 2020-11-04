@@ -21,7 +21,7 @@ router.beforeEach(async (to, from, next) => {
 router.afterEach((to, from) => {
   // https://github.com/highlightjs/highlight.js/issues/909#issuecomment-131686186
   Vue.nextTick(() => {
-    const blocks = document.querySelectorAll('pre code:not(.hljs)');
-    Array.prototype.forEach.call(blocks, hljs.highlightBlock);
+    // const blocks = document.querySelectorAll('pre code:not(.hljs)');
+    // Array.prototype.forEach.call(blocks, hljs.highlightBlock);
   });
 })

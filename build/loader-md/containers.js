@@ -5,11 +5,37 @@ module.exports = md => {
     .use(...createContainer('tip', 'TIP'))
     .use(...createContainer('warning', 'WARNING'))
     .use(...createContainer('danger', 'WARNING'))
+    .use(...createContainer('html', 'HTML'))
     // explicitly escape Vue syntax
     .use(container, 'v-pre', {
       render: (tokens, idx) => tokens[idx].nesting === 1
         ? `<div v-pre>\n`
         : `</div>\n`
+    })
+    .use(container, 'demo', {
+      // validate (params) {
+      //   return params.trim().match(/^demo\s*(.*)$/);
+      // },
+      render (tokens, idx) {
+        // console.log(tokens)
+        const m = tokens[idx].info.trim().match(/^demo\s*(.*)$/);
+        // console.log("m====", m)
+
+        if (tokens[idx].nesting === 1) {
+          const description = m && m.length > 1 ? m[1] : '';
+          // console.log("description====", description)
+
+
+          const content = tokens[idx + 1].type === 'fence' ? tokens[idx + 1].content : '';
+          // console.log("content====", content)
+
+          return `<demo-block>
+        ${description ? `<div>${md.render(description)}</div>` : ''}
+        <!--element-demo: ${content}:element-demo-->
+        `;
+        }
+        return '</demo-block>';
+      }
     })
 }
 
