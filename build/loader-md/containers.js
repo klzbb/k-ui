@@ -1,6 +1,7 @@
 const container = require('markdown-it-container')
 
 module.exports = md => {
+  console.log("klz===", md.renderer.rules)
   md
     .use(...createContainer('tip', 'TIP'))
     .use(...createContainer('warning', 'WARNING'))
@@ -17,22 +18,24 @@ module.exports = md => {
       //   return params.trim().match(/^demo\s*(.*)$/);
       // },
       render (tokens, idx) {
-        // console.log(tokens)
+        console.count("kkk")
+        console.log("idx===", idx)
+        console.log(tokens)
         const m = tokens[idx].info.trim().match(/^demo\s*(.*)$/);
         // console.log("m====", m)
 
         if (tokens[idx].nesting === 1) {
           const description = m && m.length > 1 ? m[1] : '';
-          // console.log("description====", description)
+          console.log("description====", description)
 
 
           const content = tokens[idx + 1].type === 'fence' ? tokens[idx + 1].content : '';
           // console.log("content====", content)
 
           return `<demo-block>
-        ${description ? `<div>${md.render(description)}</div>` : ''}
-        <!--element-demo: ${content}:element-demo-->
-        `;
+          ${description ? `<div>${md.render(description)}</div>` : ''}
+          <!--element-demo: ${content}:element-demo-->
+          `;
         }
         return '</demo-block>';
       }

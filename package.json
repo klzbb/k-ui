@@ -4,7 +4,7 @@
   "description": "an ui base on vue.js",
   "main": "./examples/entry.js",
   "scripts": {
-    "dev:test": "webpack-dev-server --config build/webpack.test.js",
+    "dev:test": "cross-env NODE_ENV=development && cnpm run build:file && webpack-dev-server --config build/webpack.test.js",
     "build:md": "webpack --config build/webpack.build.js",
     "build:file": "node build/bin/build-entry.js & node build/bin/version.js",
     "bootstrap": "yarn || npm i",

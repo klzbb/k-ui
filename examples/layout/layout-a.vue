@@ -14,18 +14,14 @@ export default {
   name:"LayoutA",
   methods:{
     doc(type){
-      //  this.$router.push({
-      //       name:"Guide"
-      //     })
+     
       const condition = {
         '1': () => {
-          debugger;
           this.$router.push({
             name:"Guide"
           })
         },
         '2': () => {
-          debugger;
           this.$router.push({
             name:"Components"
           })

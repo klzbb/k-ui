@@ -44,27 +44,71 @@ const md = require('markdown-it')({
 
 const cache = LRU({ max: 1000 })
 
-module.exports = function (src) {
-  const isProd = process.env.NODE_ENV === 'production'
+const {
+  stripScript,
+  stripTemplate,
+  genInlineComponentText
+} = require('./util');
 
-  const file = this.resourcePath
-  const key = hash(file + src)
-  // const cached = cache.get(key)
 
-  // // 重新模式下构建时使用缓存以提高性能
-  // if (cached && (isProd || /\?vue/.test(this.resourceQuery))) {
-  //   return cached
-  // }
+module.exports = function (source) {
+  const content = md.render(source);
 
-  const html = md.render(src)
+  const startTag = '<!--element-demo:';
+  const startTagLen = startTag.length;
+  const endTag = ':element-demo-->';
+  const endTagLen = endTag.length;
 
-  const res = (
-    `<template>\n` +
-    `<div class="content">${html}</div>\n` +
-    `</template>\n`
-  )
-  cache.set(key, res)
-  console.log(res)
-  return res
+  let componenetsString = '';
+  let id = 0; // demo 的 id
+  let output = []; // 输出的内容
+  let start = 0; // 字符串开始位置
+
+  let commentStart = content.indexOf(startTag);
+  let commentEnd = content.indexOf(endTag, commentStart + startTagLen);
+  while (commentStart !== -1 && commentEnd !== -1) {
+    output.push(content.slice(start, commentStart));
+
+    const commentContent = content.slice(commentStart + startTagLen, commentEnd);
+    const html = stripTemplate(commentContent);
+    const script = stripScript(commentContent);
+    let demoComponentContent = genInlineComponentText(html, script);
+    const demoComponentName = `element-demo${id}`;
+    output.push(`<template slot="source"><${demoComponentName} /></template>`);
+    componenetsString += `${JSON.stringify(demoComponentName)}: ${demoComponentContent},`;
+
+    // 重新计算下一次的位置
+    id++;
+    start = commentEnd + endTagLen;
+    commentStart = content.indexOf(startTag, start);
+    commentEnd = content.indexOf(endTag, commentStart + startTagLen);
+  }
+
+  // 仅允许在 demo 不存在时，才可以在 Markdown 中写 script 标签
+  // todo: 优化这段逻辑
+  let pageScript = '';
+  if (componenetsString) {
+    pageScript = `<script>
+      export default {
+        name: 'component-doc',
+        components: {
+          ${componenetsString}
+        }
+      }
+    </script>`;
+  } else if (content.indexOf('<script>') === 0) { // 硬编码，有待改善
+    start = content.indexOf('</script>') + '</script>'.length;
+    pageScript = content.slice(0, start);
+  }
+
+  output.push(content.slice(start));
+  return `
+    <template>
+      <section class="content element-doc">
+        ${output.join('')}
+      </section>
+    </template>
+    ${pageScript}
+  `;
 
 };

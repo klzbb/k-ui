@@ -12,12 +12,12 @@ const routes = [
         path: 'guide',
         name: "Guide",
         component: () => import("examples/views/guide/index.md")
+      },
+      {
+        path: 'components',
+        name: "Components",
+        component: () => import("examples/views/components/index.vue")
       }
-      // {
-      //   path: 'components',
-      //   name: "Components",
-      //   component: Doc
-      // }
     ]
   }
 ]
