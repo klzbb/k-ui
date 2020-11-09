@@ -2,6 +2,8 @@ import Vue from 'vue';
 import App from './App.vue';
 import VueRouter from 'vue-router';
 import router from './router/index.js';
+import 'packages/theme-chalk/src/index.scss';
+
 import KUi from 'main/index.js';
 import demoBlock from './components/demo-block';
 import KButton from 'packages/button/src/button.vue'
