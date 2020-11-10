@@ -1,6 +1,6 @@
 <template>
   <button class="k-button">
-    kkk
+    <span><slot></slot></span>
   </button>
 </template>
 <script>
